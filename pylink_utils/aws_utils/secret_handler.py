@@ -1,21 +1,16 @@
 import base64
 import json
-import os
 from typing import Optional, Union
 
-import boto3
 from botocore.exceptions import ClientError
 
+from . import SessionABC
 
-class SecretHandler:
-    def __init__(self, region_name: Optional[str] = None, profile: Optional[str] = None):
+
+class SecretHandler(SessionABC):
+    def __init__(self, region_name: Optional[str] = None, profile_name: Optional[str] = None):
         # Create a Secrets Manager client
-        if os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is not None:
-            assert region_name, "region name must be provided if running remotely"
-            self._session = boto3.session.Session(region_name=region_name)
-        else:
-            assert profile, "profile must be provided if running locally"
-            self._session = boto3.session.Session(profile_name=profile)
+        super().__init__(region_name=region_name, profile_name=profile_name)
         self._client = self._session.client(service_name="secretsmanager")
 
     def get_secret(self, secret_name: str) -> Union[dict, bytes]:
@@ -26,7 +21,7 @@ class SecretHandler:
         Args:
             secret_name: the key-value pairs are stored in the secret manager under this name
             region_name: e.g. "eu-west-2"
-            profile: for local run, you can provide the profile name (e.g. intriva)
+            profile_name: for local run, you can provide the profile_name name (e.g. intriva)
 
         Returns:
             secret: this stores all the key-value pairs

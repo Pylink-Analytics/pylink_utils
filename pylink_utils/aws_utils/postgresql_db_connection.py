@@ -1,11 +1,12 @@
 from typing import Optional, Dict, List
 
 import awswrangler as wr
-import boto3
 import pandas as pd
 
+from . import SessionABC
 
-class PostgreSQLDatabaseConnection:
+
+class PostgreSQLDatabaseConnection(SessionABC):
     """Handler to connect to db using aws wrangler
 
     In order for this to work, you must first set up aws config correctly in the root directory of the user.
@@ -25,7 +26,7 @@ class PostgreSQLDatabaseConnection:
         region = eu-west-1
         output = json
 
-        [profile intriva]
+        [profile_name intriva]
         region = eu-west-2
         output = json
 
@@ -39,9 +40,9 @@ class PostgreSQLDatabaseConnection:
 
     """
 
-    def __init__(self, glue_connection: str,  profile_name: str = None):
-        session = boto3.session.Session(profile_name=profile_name)
-        self._connection = wr.postgresql.connect(connection=glue_connection, boto3_session=session)
+    def __init__(self, glue_connection: str,  region_name: Optional[str], profile_name: Optional[str] = None):
+        super().__init__(region_name=region_name, profile_name=profile_name)
+        self._connection = wr.postgresql.connect(connection=glue_connection, boto3_session=self._session)
 
     def upload_df_to_db(
         self,
