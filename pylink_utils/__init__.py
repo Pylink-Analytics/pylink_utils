@@ -1,1 +1,1 @@
-from html_to_json import *
+from pylink_utils.data_tools.html_to_json import *
