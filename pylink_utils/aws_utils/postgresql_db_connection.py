@@ -34,13 +34,25 @@ class PostgreSQLDatabaseConnection(SessionABC):
         [default]
         aws_access_key_id = ******************
         aws_secret_access_key = *********************************
+
         [intriva]
         aws_access_key_id = ********************
         aws_secret_access_key = **************************************
 
     """
 
-    def __init__(self, glue_connection: str,  region_name: Optional[str], profile_name: Optional[str] = None):
+    def __init__(
+            self,
+            glue_connection: str,
+            region_name: Optional[str] = "eu-west-2",
+            profile_name: Optional[str] = None
+    ):
+        """
+        Args:
+            glue_connection
+            region_name: only required if you run in AWS
+            profile_name: only required if you run locally
+        """
         super().__init__(region_name=region_name, profile_name=profile_name)
         self._connection = wr.postgresql.connect(connection=glue_connection, boto3_session=self._session)
 
