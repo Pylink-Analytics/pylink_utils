@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pylink_utils"
-version = "1.2.3"
+version = "1.2.4"
 description = ""
 authors = ["douglas-peter <76939369+douglas-peter@users.noreply.github.com>"]
 homepage = "https://github.com/Pylink-Analytics/pylink_utils"

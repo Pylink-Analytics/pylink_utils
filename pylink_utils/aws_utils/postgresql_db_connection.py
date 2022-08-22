@@ -49,7 +49,7 @@ class PostgreSQLDatabaseConnection(SessionABC):
     ):
         """
         Args:
-            glue_connection
+            glue_connection: name of aws glue connection to use. More info at https://docs.aws.amazon.com/glue/latest/dg/connection-using.html
             region_name: only required if you run in AWS
             profile_name: only required if you run locally
         """
